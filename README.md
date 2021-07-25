@@ -6,6 +6,8 @@ AtlasTextures structures were used to store the heightmap and normalmap generate
 
 To test, it is possible to open the MyTerrain scene and select the Terrain object. From this interface (image below), it is possible to add, remove and edit noises. The results obtained can be seen when starting the game. It is also possible to edit the values in play mode, and the results will be immediately reflected in the terrain.
 
+![Screenshot](https://github.com/ffranzin/ProceduralTerrain/blob/8b1cdabfb1becc06fa088187a67bf64b4d546b18/Assets/SampleImages/TerrainNoiseInspector.PNG?raw=true)
+
 Below are two terrains (2<sup>19</sup>x2<sup>19</sup>km each) quickly generated for testing.
 
 ![Screenshot](https://github.com/ffranzin/ProceduralTerrain/blob/af529f13becbd53d4f5e036d3003feb1decb3588/Assets/SampleImages/sample1.png?raw=true)
