@@ -98,9 +98,10 @@ namespace MyTerrain
             m_BoundsXZMinSize = new Vector4(m_BoundsWorld.min.x, m_BoundsWorld.min.z, m_BoundsWorld.size.x, m_BoundsWorld.size.z);
 
             if (m_Parent != null)
+            {
                 m_Parent.UpdateMinMax(m_MinHeight, m_MaxHeight);
+            }
         }
-
 
 
         public void Release()
@@ -113,7 +114,6 @@ namespace MyTerrain
         }
 
 
-
         public void Reset()
         {
             ReleaseChildren();
@@ -123,7 +123,9 @@ namespace MyTerrain
                 for (int i = 0; i < 4; i++)
                 {
                     if (m_Parent.m_Children[i] == this)
+                    {
                         m_Parent.m_Children[i] = null;
+                    }
                 }
             }
 
@@ -133,7 +135,10 @@ namespace MyTerrain
             m_Parent = null;
 
             if (m_QuadTree != null)
+            {
                 m_QuadTree.m_NodeCount--;
+            }
+
             m_QuadTree = null;
 
             m_MinHeight = DefaultMinHeight;

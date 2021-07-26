@@ -5,7 +5,7 @@ namespace Utils.Atlas
 {
     public class AdvancedAtlas : AdvancedAtlasMultiResolution
     {
-        private int pageResolution = 0;
+        private readonly int pageResolution = 0;
 
         public AdvancedAtlas(RenderTextureFormat renderTextureFormat, FilterMode filterMode, RenderTextureReadWrite renderTextureReadWrite, int pageResolution, string name = "Default") : base(renderTextureFormat, filterMode, renderTextureReadWrite, name)
         {
@@ -13,7 +13,6 @@ namespace Utils.Atlas
 
             this.pageResolution = pageResolution;
         }
-
 
         public AtlasPageDescriptor GetPage()
         {

@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 
 
-
 namespace Utils.Atlas
 {
     public class AtlasPageDescriptor
     {
-        private AdvancedAtlasMultiResolution atlas;
+        private readonly AdvancedAtlasMultiResolution atlas;
 
         public RenderTexture texture => atlas.texture;
 
@@ -24,7 +23,7 @@ namespace Utils.Atlas
 
         public void Release()
         {
-            if(atlas == null)
+            if (atlas == null)
             {
                 Debug.LogError("asdasdasdas");
             }

@@ -3,9 +3,6 @@ using UnityEngine;
 
 namespace Utils.Atlas
 {
-
-
-
     public class AdvancedAtlasMultiResolution
     {
         protected string atlasName;
@@ -37,11 +34,13 @@ namespace Utils.Atlas
 
             atlasPages = new Dictionary<int, Queue<AtlasPageDescriptor>>();
 
-            m_texture = new RenderTexture(1, 1, 0, renderTextureFormat, renderTextureReadWrite);
-            m_texture.enableRandomWrite = true;
-            m_texture.autoGenerateMips = false;
-            m_texture.filterMode = filterMode;
-            m_texture.wrapMode = TextureWrapMode.Clamp;
+            m_texture = new RenderTexture(1, 1, 0, renderTextureFormat, renderTextureReadWrite)
+            {
+                enableRandomWrite = true,
+                autoGenerateMips = false,
+                filterMode = filterMode,
+                wrapMode = TextureWrapMode.Clamp
+            };
             m_texture.Create();
         }
 
@@ -85,11 +84,13 @@ namespace Utils.Atlas
 
         private void ResizeAtlas(int width)
         {
-            RenderTexture auxAtlas = new RenderTexture(width, SystemInfo.maxTextureSize, 0, renderTextureFormat, renderTextureReadWrite);
-            auxAtlas.enableRandomWrite = true;
-            auxAtlas.autoGenerateMips = false;
-            auxAtlas.filterMode = filterMode;
-            auxAtlas.wrapMode = TextureWrapMode.Clamp;
+            RenderTexture auxAtlas = new RenderTexture(width, SystemInfo.maxTextureSize, 0, renderTextureFormat, renderTextureReadWrite)
+            {
+                enableRandomWrite = true,
+                autoGenerateMips = false,
+                filterMode = filterMode,
+                wrapMode = TextureWrapMode.Clamp
+            };
             auxAtlas.Create();
 
             if (!IsNullTexture)

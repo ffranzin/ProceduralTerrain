@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyTerrain
@@ -30,12 +29,11 @@ namespace MyTerrain
             m_Root.Initialize(this, null, terrainBounds);
         }
 
-
-        void InitializeLevelMaxDiameterArray()
+        private void InitializeLevelMaxDiameterArray()
         {
             m_LevelMaxDiameter = new double[LevelCount];
 
-            double terrainDiagonal = Math.Sqrt((double)TerrainSettings.TERRAIN_SIZE * (double)TerrainSettings.TERRAIN_SIZE * 2.0f);
+            double terrainDiagonal = Math.Sqrt(TerrainSettings.TERRAIN_SIZE * (double)TerrainSettings.TERRAIN_SIZE * 2.0f);
             for (int i = MaxDepth; i >= 0; i--)
             {
                 m_LevelMaxDiameter[i] = terrainDiagonal / Math.Pow(2, i);
@@ -52,7 +50,9 @@ namespace MyTerrain
         private int CollectOldNodes(QuadTreeNode node)
         {
             if (node == null)
+            {
                 return 0;
+            }
 
             if (node.isLeaf || !node.hasBeenRefined)
             {
@@ -81,7 +81,7 @@ namespace MyTerrain
             Bounds terrainBounds = m_Root.m_BoundsWorld;
 
             m_Root.Reset();
-            
+
             m_Root.Initialize(this, null, terrainBounds);
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace Utils.Analysis
 {

@@ -1,18 +1,16 @@
-﻿
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Profiling;
 
 namespace Utils.Analysis
 {
     public class PerformanceAnalysis : Analysis
     {
-        private CustomSampler sampler;
+        private readonly CustomSampler sampler;
         private string prefix = "";
         private string sufix = "";
-        private bool enableCPUSampler;
-        private bool enableGPUSampler;
-        private bool allowEmptyTimer;
+        private readonly bool enableCPUSampler;
+        private readonly bool enableGPUSampler;
+        private readonly bool allowEmptyTimer;
 
         private const double NANOSECONDS_TO_MILLISECONDS = 0.000001f;
 
@@ -43,7 +41,7 @@ namespace Utils.Analysis
             {
                 AddData($"\n Frame:{Time.frameCount - unityProfilerDelay} {prefix}\t" + (sampler.GetRecorder().elapsedNanoseconds * NANOSECONDS_TO_MILLISECONDS).ToString("0.0000") + "\t" + (sampler.GetRecorder().gpuElapsedNanoseconds * NANOSECONDS_TO_MILLISECONDS).ToString("0.0000") + "  \t" + sufix);
             }
-            else if(enableCPUSampler && (allowEmptyTimer || sampler.GetRecorder().elapsedNanoseconds > 1))
+            else if (enableCPUSampler && (allowEmptyTimer || sampler.GetRecorder().elapsedNanoseconds > 1))
             {
                 AddData($"\n Frame:{Time.frameCount - unityProfilerDelay} {prefix}\t" + (sampler.GetRecorder().elapsedNanoseconds * NANOSECONDS_TO_MILLISECONDS).ToString("0.0000") + "  \t" + sufix);
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -7,16 +6,16 @@ namespace MyTerrain
 {
     public class TerrainRenderer
     {
-        private MyTerrain m_Terrain;
+        private readonly MyTerrain m_Terrain;
 
-        private Mesh m_InstanceGridMesh;
+        private readonly Mesh m_InstanceGridMesh;
 
-        private Vector2[] _HeightmapAtlasPos;
-        private Vector2[] normalmapAtlasPos;
-        private Vector4[] positions;
+        private readonly Vector2[] _HeightmapAtlasPos;
+        private readonly Vector2[] normalmapAtlasPos;
+        private readonly Vector4[] positions;
 
-        private MaterialPropertyBlock mpb;
-        private uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
+        private readonly MaterialPropertyBlock mpb;
+        private readonly uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
 
         private ComputeBuffer m_PositionBuffer;
         private ComputeBuffer m_ArgsBuffer;
@@ -46,12 +45,11 @@ namespace MyTerrain
             {
                 UpdateBuffers(selection);
 
-                Graphics.DrawMeshInstancedIndirect(m_InstanceGridMesh, 0, m_Terrain.instanceMaterial, new Bounds(Vector3.zero, Vector3.one * Single.MaxValue), m_ArgsBuffer, 0, mpb, ShadowCastingMode.Off, true, 0, cam, LightProbeUsage.BlendProbes);
+                Graphics.DrawMeshInstancedIndirect(m_InstanceGridMesh, 0, m_Terrain.instanceMaterial, new Bounds(Vector3.zero, Vector3.one * float.MaxValue), m_ArgsBuffer, 0, mpb, ShadowCastingMode.Off, true, 0, cam, LightProbeUsage.BlendProbes);
             }
         }
 
-
-        void SetComputeBuffers()
+        private void SetComputeBuffers()
         {
             m_ArgsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
             m_PositionBuffer = new ComputeBuffer(MyTerrain.MAX_NODES_SELECTED, 16);
@@ -59,8 +57,7 @@ namespace MyTerrain
             m_NormalmapAtlasPosBuffer = new ComputeBuffer(MyTerrain.MAX_NODES_SELECTED, sizeof(float) * 2);
         }
 
-
-        void SetUniforms()
+        private void SetUniforms()
         {
             mpb.SetTexture("_HeightmapAtlas", m_Terrain.m_HeightmapAtlas.texture);
             mpb.SetTexture("_NormalmapAtlas", m_Terrain.m_NormalmapAtlas.texture);
@@ -74,7 +71,7 @@ namespace MyTerrain
             Shader.SetGlobalInt("_HeightmapSizePadded", MyTerrain.HeightmapSizePadded);
             Shader.SetGlobalInt("_NormalmapSize", MyTerrain.NormalmapSize);
             Shader.SetGlobalInt("_NormalmapSizePadded", MyTerrain.NormalmapSizePadded);
-            
+
             Shader.SetGlobalVector("_HeightmapAtlasDimension", new Vector2(m_Terrain.m_HeightmapAtlas.texture.width, m_Terrain.m_HeightmapAtlas.texture.height));
             Shader.SetGlobalVector("_NormalmapAtlasDimension", new Vector2(m_Terrain.m_NormalmapAtlas.texture.width, m_Terrain.m_NormalmapAtlas.texture.height));
         }
@@ -84,7 +81,7 @@ namespace MyTerrain
         {
             int instanceCount = Mathf.Min(selection.Count, MyTerrain.MAX_NODES_SELECTED);
 
-            uint numIndices = (m_InstanceGridMesh != null) ? (uint)m_InstanceGridMesh.GetIndexCount(0) : 0;
+            uint numIndices = (m_InstanceGridMesh != null) ? m_InstanceGridMesh.GetIndexCount(0) : 0;
             args[0] = numIndices;
             args[1] = (uint)instanceCount;
             m_ArgsBuffer.SetData(args);
@@ -93,7 +90,7 @@ namespace MyTerrain
             {
                 Bounds nodeBounds = selection[i].m_BoundsWorld;
 
-                positions[i] = new Vector4((float)nodeBounds.min.x, 0, (float)nodeBounds.min.z, nodeBounds.size.x);
+                positions[i] = new Vector4(nodeBounds.min.x, 0, nodeBounds.min.z, nodeBounds.size.x);
                 _HeightmapAtlasPos[i] = selection[i].HeightmapDescriptor.tl;
                 normalmapAtlasPos[i] = selection[i].NormalmapDescriptor.tl;
             }
@@ -118,9 +115,9 @@ namespace MyTerrain
             {
                 for (int x = 0; x <= size; x++, i++)
                 {
-                    uvs[i] = new Vector2((float)x / (float)size, (float)y / (float)size);
-                    
-                    vertices[i] = new Vector3((float)x / (float)size, 0.0f, (float)y / (float)size);
+                    uvs[i] = new Vector2(x / (float)size, y / (float)size);
+
+                    vertices[i] = new Vector3(x / (float)size, 0.0f, y / (float)size);
                 }
             }
 
@@ -147,8 +144,7 @@ namespace MyTerrain
             return grid;
         }
 
-
-        void OnDisable()
+        private void OnDisable()
         {
             m_PositionBuffer?.Release();
             m_PositionBuffer = null;

@@ -1,21 +1,9 @@
 ﻿
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public static class AtlasUtils
 {
-    public static float GetClosestMultipleOf(float value, float multiple)
-    {
-        float rest = (value % multiple) / multiple;
-
-        if (rest > 0.5f)
-        {
-            return Mathf.Floor(value / multiple) * multiple + multiple;
-        }
-        return Mathf.Floor(value / multiple) * multiple;
-    }
-
     public static float GetNextMultipleOf(float value, float multiple)
     {
         if ((value % multiple) == 0)
@@ -42,18 +30,18 @@ public class AtlasMultiLevel
 
         public AdvancedAtlasPageDescriptor(AtlasMultiLevel atlas, Vector2 pos, int size, int level)
         {
-            this.Atlas = atlas;
-            this.Pos = pos;
-            this.Size = size;
-            this.Level = level;
+            Atlas = atlas;
+            Pos = pos;
+            Size = size;
+            Level = level;
             pageDescriptorToGPU = new Vector4(pos.x, pos.y, size, level);
         }
     }
 
     public RenderTexture AtlasTexture { get; private set; }
-    
-    private List<Stack<AdvancedAtlasPageDescriptor>> freePages = new List<Stack<AdvancedAtlasPageDescriptor>>();
-    private List<(int pageResolution, int pageCounter)> atlasSetting;
+
+    private readonly List<Stack<AdvancedAtlasPageDescriptor>> freePages = new List<Stack<AdvancedAtlasPageDescriptor>>();
+    private readonly List<(int pageResolution, int pageCounter)> atlasSetting;
 
 
     public AtlasMultiLevel(RenderTextureFormat format, FilterMode filterMode, bool linear, List<(int pageResolution, int pageCounter)> atlasSetting)
@@ -72,7 +60,7 @@ public class AtlasMultiLevel
             }
 
             int pageRes = Mathf.NextPowerOfTwo(atlasSetting[i].pageResolution);
-            int pageCounter = (int)AtlasUtils.GetNextMultipleOf((float)atlasSetting[i].pageCounter, texMaxSize / pageRes);
+            int pageCounter = (int)AtlasUtils.GetNextMultipleOf(atlasSetting[i].pageCounter, texMaxSize / pageRes);
 
             InitializePagesAtLevel(i, pageCounter, pageRes, width);
 
@@ -92,11 +80,13 @@ public class AtlasMultiLevel
             return;
         }
 
-        AtlasTexture = new RenderTexture(width, height, 0, format, linear ? RenderTextureReadWrite.Linear : RenderTextureReadWrite.sRGB);
-        AtlasTexture.enableRandomWrite = true;
-        AtlasTexture.autoGenerateMips = false;
-        AtlasTexture.filterMode = filterMode;
-        AtlasTexture.wrapMode = TextureWrapMode.Clamp;
+        AtlasTexture = new RenderTexture(width, height, 0, format, linear ? RenderTextureReadWrite.Linear : RenderTextureReadWrite.sRGB)
+        {
+            enableRandomWrite = true,
+            autoGenerateMips = false,
+            filterMode = filterMode,
+            wrapMode = TextureWrapMode.Clamp
+        };
         AtlasTexture.Create();
     }
 

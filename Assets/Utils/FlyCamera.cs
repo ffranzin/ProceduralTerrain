@@ -5,7 +5,7 @@ namespace Utils.Cameras
 {
     public class FlyCamera : MonoBehaviour
     {
-        Transform iniPos;
+        private readonly Transform iniPos;
         public bool dynamicNearPlane = true;
         public float minSpeed = 0.5f;
         public float mainSpeed = 10f; // Regular speed.
@@ -21,8 +21,7 @@ namespace Utils.Cameras
 
         public static float velocity;
 
-
-        void Update()
+        private void Update()
         {
             Vector3 lastPosition = transform.position;
 
@@ -33,13 +32,14 @@ namespace Utils.Cameras
             velocity *= 3.6f;
         }
 
-
-        void ProcessMouse()
+        private void ProcessMouse()
         {
             if (clickToMove)
             {
                 if (!Input.GetMouseButton(0))
+                {
                     return;
+                }
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -51,7 +51,9 @@ namespace Utils.Cameras
             mainSpeed += Input.GetAxis("Mouse ScrollWheel") * mainSpeed * 2f;
 
             if (mainSpeed < minSpeed)
+            {
                 mainSpeed = minSpeed;
+            }
 
             // Mouse input.
             Vector3 mouseDelta = Input.mousePosition - lastMouse;
@@ -67,9 +69,13 @@ namespace Utils.Cameras
             Vector3 p = getDirection();
 
             if (Input.GetKey(KeyCode.LeftShift))
+            {
                 p = p * mainSpeed * shiftMultiplier;
+            }
             else
+            {
                 p = p * mainSpeed;
+            }
 
             p = p * Time.unscaledDeltaTime;
 

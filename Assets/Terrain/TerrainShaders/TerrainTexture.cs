@@ -18,7 +18,7 @@ public class TerrainTexture : MonoBehaviour
 
     public void SetTerrainTexturesOnMaterial(Material material)
     {
-        if(texArrayAlbedo == null || texArrayNormal == null || texArrayAO == null || texArraySpecular == null || texArraySmoothness == null)
+        if (texArrayAlbedo == null || texArrayNormal == null || texArrayAO == null || texArraySpecular == null || texArraySmoothness == null)
         {
             CreateTextureArrays();
         }

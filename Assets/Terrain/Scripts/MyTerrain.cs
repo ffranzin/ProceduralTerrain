@@ -28,10 +28,10 @@ namespace MyTerrain
         public static int GridSize = (int)(TerrainSettings.LEAF_NODE_SIZE / TerrainSettings.TERRAIN_RESOLUTION);
         public static int HeightmapSize = GridSize + 1;
         public static int NormalmapSize = GridSize + 1;
-        
+
         public static int HeightmapSizePadded = HeightmapSize + 2;
         public static int NormalmapSizePadded = NormalmapSize + 2;
-        
+
 
         public Atlas m_HeightmapAtlas { get; private set; }
         public Atlas m_NormalmapAtlas { get; private set; }
@@ -81,7 +81,6 @@ namespace MyTerrain
 
         private void UpdateTerrainNoisesOnGPU()
         {
-
             terrainNoiseParametersOnGPU = new ComputeBuffer(terrainNoiseParameters.Length, Marshal.SizeOf<NoiseParams>());
             terrainNoiseParametersOnGPU.SetData(terrainNoiseParameters);
             Shader.SetGlobalBuffer("_TerrainNoisesParamns", terrainNoiseParametersOnGPU);
@@ -152,8 +151,8 @@ namespace MyTerrain
             {
                 foreach (QuadTreeNode node in m_LODSelection)
                 {
-                    UnityEngine.Random.InitState(node.m_Depth);
-                    Gizmos.color = UnityEngine.Random.ColorHSV();
+                    Random.InitState(node.m_Depth);
+                    Gizmos.color = Random.ColorHSV();
 
                     Gizmos.DrawWireCube(node.m_BoundsWorld.center, node.m_BoundsWorld.size);
                 }
