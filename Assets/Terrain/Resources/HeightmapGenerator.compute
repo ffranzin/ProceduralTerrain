@@ -1,0 +1,66 @@
+﻿#pragma kernel GenerateHeightmap
+#pragma kernel GenerateAndGetHeightmap
+
+
+#include "Assets/Terrain/TerrainShaders/Heightmap.cginc"
+#include "Assets/HLSLUtilities/MathUtils.cginc"
+
+RWStructuredBuffer<int> _MinMaxBuffer;
+RWTexture2D<float> _HeightmapAtlas;
+RWTexture2D<float4> _NormalmapAtlas;
+
+RWStructuredBuffer<float> _GetHeight;
+
+             
+int _HeightmapSize;
+int _HeightmapSizePadded;
+
+float2 _HeightmapAtlasPos;
+
+float2 _NodePos;
+float _NodeSize;   
+int _PixelCount;   
+
+float3 _WorldPosSampleHeight;
+RWStructuredBuffer<float> _WorldPosSampleHeightOutput;
+
+[numthreads(8,8,1)]
+void GenerateHeightmap(uint3 id : SV_DispatchThreadID)
+{   
+    if (id.x > _HeightmapSizePadded || id.y > _HeightmapSizePadded)
+	{
+		return;
+	}
+	
+    float hmPixelSize = _NodeSize / (float)(_HeightmapSize - 1);          
+
+    float2 worldPos = _NodePos + (float2(id.xy) - float2(1, 1)) * hmPixelSize;
+
+	float height = GetHeightBase(worldPos);
+	
+	InterlockedMin(_MinMaxBuffer[0], height);
+	InterlockedMax(_MinMaxBuffer[1], height);
+	
+    _HeightmapAtlas[_HeightmapAtlasPos + id.xy] = height;
+}
+
+
+[numthreads(8,8,1)]
+void GenerateAndGetHeightmap(uint3 id : SV_DispatchThreadID)
+{   
+    if (id.x >= _PixelCount || id.y >= _PixelCount)
+	{
+		return;
+	}
+    
+    float hmPixelSize = _NodeSize / (float)(_PixelCount - 1);          
+
+    float2 worldPos = _NodePos + float2(id.xy) * hmPixelSize;
+
+	float height = GetHeightBase(worldPos);
+
+	InterlockedMin(_MinMaxBuffer[0], (int)floor(height));
+	InterlockedMax(_MinMaxBuffer[1], (int)ceil(height));
+
+    _GetHeight[id.y * _PixelCount + id.x] = height; //must be row major
+}

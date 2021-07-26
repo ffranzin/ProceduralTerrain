@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: d18f5bdd8b2f6f340940a1a4e8018076
+timeCreated: 1501718172
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - noiseTex: {fileID: 2800000, guid: 0413106513609434aa37358384d94660, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
